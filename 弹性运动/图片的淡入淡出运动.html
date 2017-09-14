@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			img{
+				width: 600px;
+				opacity: 1;
+				filter:alpha(opacity=100);
+			}
+			div{
+				font-size: 12px;
+				width:100px;
+				height:100px;
+				left:0px;
+				background: red;
+				position: absolute;
+			}
+		</style>
+
+	</head>
+	<body>
+		<!--<img src="1.jpg" alt="" />-->
+		<div>12345678</div>
+		<div style="width:1px;height:600px;background: #000;position: absolute;left:1000px;top:0px;"></div>
+		<script type="text/javascript">
+			function getstyle(obj,attr){
+				if(obj.currentStyle){
+					return obj.currentStyle[attr];
+				}else{
+					return getComputedStyle(obj)[attr];
+				}
+			}
+			/*var oImg=document.getElementsByTagName('img')[0];
+			var timer=null;
+			//alert(getstyle(oImg,'width'));//600px
+			//alert(getstyle(oImg,'opacity'));
+			var current=0;
+			
+			timer=setInterval(function(){
+				current=Math.round(getstyle(oImg,'opacity')*100);
+				if(current==100){
+					clearInterval(timer);
+				}else{
+					oImg.style.opacity=(current+5)/100;
+					oImg.style.filter='alpha(opacity='+(current+5)+')';
+				}
+				
+			},500)*/
+			var oImg=document.getElementsByTagName('img')[0];
+			var oDiv=document.getElementsByTagName('div')[0];
+			var timer=null;
+			var speed=0;
+			function move(obj,attr,target,fn){
+				//obj:对象  attr：属性   target：目标  fn：回调。
+				var current=0;
+				clearInterval(timer);//一开始先关闭定时器
+				timer=setInterval(function(){
+					if(attr=='opacity'){
+						current=Math.round(getstyle(obj,attr)*100);
+					}else{
+						current=parseInt(getstyle(obj,attr));
+					}
+					//利用目标点和当前的距离来获取
+					speed=(target-parseInt(getstyle(obj,attr)))/10;
+					speed=speed>0?Math.ceil(speed):Math.floor(speed);
+					if(current==target){
+						clearInterval(timer);
+						/*if(fn){//如果fn存在，执行
+							fn();//上一次运动结束，fn执行。
+						}*/
+						fn&&fn();
+						
+					}else{
+						if(attr=='opacity'){
+							obj.style[attr]=(current+speed)/100;
+							obj.style.filter='alpha(opacity='+(current+speed)+')';
+						}else{
+							obj.style[attr]=current+speed+'px'
+						}
+					}
+					
+				},20)
+			}
+			oDiv.onclick=function(){
+				move(oDiv,'left',1000,function(){
+					move(oDiv,'top',500)
+				});
+			}
+			
+		</script>
+	</body>
+</html>

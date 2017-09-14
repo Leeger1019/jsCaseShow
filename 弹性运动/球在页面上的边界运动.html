@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				width: 100px;
+				height:100px;
+				background: red;
+				position: absolute;
+				border-radius: 50%;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload=function(){
+				var oDiv=document.getElementsByTagName('div')[0];
+				var timer=null;
+				var speedx=4;
+				var speedy=8;
+				clearInterval(timer);
+				timer=setInterval(function(){
+					speedy+=3;
+					var x=oDiv.offsetLeft+speedx;
+					var y=oDiv.offsetTop+speedy;
+					if(x>=document.documentElement.clientWidth-oDiv.offsetWidth){
+						x=document.documentElement.clientWidth-oDiv.offsetWidth;
+						speedx=-speedx;
+					}else if(x<=0){
+						x=0;
+						speedx=-speedx;
+					}
+					
+					if(y>=document.documentElement.clientHeight-oDiv.offsetHeight){
+						y=document.documentElement.clientHeight-oDiv.offsetHeight
+						speedy=-speedy*0.9;
+						speedx=speedx*0.9;
+					}else if(y<=0){
+						y=0;
+						speedy=-speedy
+					}
+					if(Math.abs(speedx)<1){
+						clearInterval(timer);
+						speedx=0;
+						speedy=0;
+					}
+					oDiv.style.left=x+'px';
+					oDiv.style.top=y+'px';
+				},20);
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div class="box"></div>
+	</body>
+</html>

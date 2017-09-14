@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				width: 100px;
+				height:100px;
+				background: red;
+				position: absolute;
+				border-radius: 50%;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload=function(){
+				var oDiv=document.getElementsByTagName('div')[0];
+				var timer=null;
+				var speedx=0;//初始速度
+				var speedy=0;
+				var prevx=0;//前一个速度
+				var prevy=0;
+				oDiv.onmousedown=function(ev){
+					var ev=ev||window.event;
+					var shortx=ev.offsetX;
+					var shorty=ev.offsetY;
+					prevx=ev.clientX;//鼠标按下获取初始轨迹的位置。
+					prevy=ev.clientY;
+					document.onmousemove=function(ev){
+						var ev=ev||window.event;
+						var x=ev.clientX-shortx;
+						var y=ev.clientY-shorty;
+						
+						speedx=ev.clientX-prevx;//鼠标的位置给前一个值
+						speedy=ev.clientY-prevy;
+						
+						prevx=ev.clientX;//鼠标重置，如果后面还有轨迹，当前鼠标位置变成前一个轨迹的位置。
+						prevy=ev.clientY;
+						
+						if(x<0){
+							x=0;
+						}else if(x>document.documentElement.clientWidth-oDiv.offsetWidth){
+							x=document.documentElement.clientWidth-oDiv.offsetWidth;
+						}
+						
+						if(y<0){
+							y=0;
+						}else if(y>document.documentElement.clientHeight-oDiv.offsetHeight){
+							y=document.documentElement.clientHeight-oDiv.offsetHeight;
+						}
+						var cdiv=document.createElement('div');
+						cdiv.style.cssText='width:5px;height:5px;background:blue;position:absolute;left:'+x+'px;top:'+y+'px;'
+						document.body.appendChild(cdiv);
+						oDiv.style.left=x+'px';
+						oDiv.style.top=y+'px';
+					}
+					document.onmouseup=function(){//拖拽结束了
+						//第三步：拖拽结束，取消事件。
+						document.onmousemove=null;
+						document.onmouseup=null;
+						move();//松开鼠标运动
+					}
+					return false;//取消默认事件，标准浏览器
+				}
+				
+				
+				function move(){//边界运动
+					clearInterval(timer);
+					timer=setInterval(function(){
+						speedy+=3;
+						var x=oDiv.offsetLeft+speedx;
+						var y=oDiv.offsetTop+speedy;
+						if(x>=document.documentElement.clientWidth-oDiv.offsetWidth){
+							x=document.documentElement.clientWidth-oDiv.offsetWidth;
+							speedx=-speedx;
+						}else if(x<=0){
+							x=0;
+							speedx=-speedx;
+						}
+						
+						if(y>=document.documentElement.clientHeight-oDiv.offsetHeight){
+							y=document.documentElement.clientHeight-oDiv.offsetHeight
+							speedy=-speedy*0.9;
+							speedx=speedx*0.9;
+						}else if(y<=0){
+							y=0;
+							speedy=-speedy
+						}
+						/*if(Math.abs(speedx)<1){
+							clearInterval(timer);
+							speedx=0;
+							speedy=0;
+						}*/
+						oDiv.style.left=x+'px';
+						oDiv.style.top=y+'px';
+					},20);
+				}
+				
+				
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div class="box"></div>
+	</body>
+</html>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<style type="text/css">
+	div{
+		width:20px;
+		height:20px;
+		background: red;
+		position: absolute;
+		border-radius: 50%;
+		
+	}
+</style>
+</head>
+<body>
+	<div class="box"></div>
+	<div style="width: 5px;height:5px; background: blue; position: absolute;left:300px;top:300px;"></div>
+	<script type="text/javascript">
+		var oDiv=document.getElementsByTagName('div')[0];
+		var num=0;
+		var timer=setInterval(function(){
+			 num++;
+			if(num>=360){
+				clearInterval(timer);
+			}
+			oDiv.style.left=300 + Math.cos(num*2*Math.PI / 360) * 100+'px';
+			oDiv.style.top=300 + Math.sin(num*2*Math.PI / 360) * 100+'px'; 
+			var cdiv=document.createElement('div');
+			cdiv.style.cssText='width:5px;height:5px; background: blue; position: absolute;';
+			cdiv.style.left=oDiv.offsetLeft+'px';
+			cdiv.style.top=oDiv.offsetTop+'px';
+			document.body.appendChild(cdiv);
+		},20)
+	</script>
+</body>
+</html>

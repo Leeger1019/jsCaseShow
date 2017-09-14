@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				width: 100px;
+				height:100px;
+				background: red;
+				position: absolute;
+				left:0px;top:0px;
+				border-radius: 50%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box"></div>
+		<div style="width:1px;height:600px;background: #000;position: absolute;left:600px;top:0px;"></div>
+		<script type="text/javascript">
+			var oDiv=document.getElementsByTagName('div')[0];
+			var timer=null;
+			var speed=0;
+			timer=setInterval(function(){
+				/*if(oDiv.offsetLeft<600){
+					speed+=(600-oDiv.offsetLeft)/10;
+				}else{
+					speed-=(oDiv.offsetLeft-600)/10;
+				}*/
+				speed+=(600-oDiv.offsetLeft)/8;
+				speed*=0.8;
+				if(Math.abs(speed)<1 && Math.abs(600-oDiv.offsetLeft)<1){
+					clearInterval(timer);
+					oDiv.style.left=600+'px';
+				}
+				oDiv.style.left=oDiv.offsetLeft+speed+'px';
+				/*speed+=(600-oDiv.offsetWidth)/8;
+				speed*=0.8;
+				if(Math.abs(speed)<1 && Math.abs(600-oDiv.offsetWidth)<1){
+					clearInterval(timer);
+					oDiv.style.width=600+'px';
+				}
+				oDiv.style.width=oDiv.offsetWidth+speed+'px';*/
+				
+			},30)
+			
+		</script>
+	</body>
+</html>

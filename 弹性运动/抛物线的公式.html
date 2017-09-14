@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#div1{
+				width:80px;
+				height:80px;
+				background: red;
+				position: absolute;
+				top:400px;
+				left:100px;
+				border-radius: 50%;
+			}
+			
+			#div2{
+				width:80px;
+				height:80px;
+				background: blue;
+				position: absolute;
+				top:100px;
+				left:800px;
+				border-radius: 50%;
+			}
+		</style>
+		<script type="text/javascript">
+			//y = Ax^2 + Bx + C  a：曲率  
+			//y = Ax^2 + Bx;//目标点x,y相对于起始点的。
+			//求b  a:自定义   x,y
+			//y = Ax^2 + Bx  a自定义  b?   x?  y?  x和y可以通过目标点获取的。 求b
+			
+			window.onload=function(){
+				var oDiv1=document.getElementsByTagName('div')[0];
+				var oDiv2=document.getElementsByTagName('div')[1];
+				
+				var current={//起始盒子的坐标值
+					cx:oDiv1.offsetLeft,
+					cy:oDiv1.offsetTop
+				};
+				
+				var  target={
+					x:oDiv2.offsetLeft-current.cx,
+					y:oDiv2.offsetTop-current.cy
+				}
+				
+				var a=0.0015;// y = Ax^2 + Bx;==>b=(y-a*x*x)/x
+				
+				var b=(target.y-a*target.x*target.x)/target.x;
+				//目标点x求b的值。
+				
+				
+				//a,b值定下来，x,y，   已知x，求y
+				var x=0;//定死水平方向
+				var timer=setInterval(function(){
+					x+=10;//x一定变化的。
+					oDiv1.style.left=current.cx+x+'px';
+					oDiv1.style.top=current.cy+(a*x*x+b*x)+'px';
+					if(x==target.x){
+						clearInterval(timer);
+					}
+				},30);
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div id="div1"></div>
+		<div id="div2"></div>
+	</body>
+</html>
