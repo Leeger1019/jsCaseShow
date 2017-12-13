@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0px;
+				margin:0px;
+			}
+			ul{
+				list-style: none;
+			}
+			li{
+				width: 160px;
+				float:left;
+				border: 1px solid red;
+				height:190px;
+				text-align: center;
+				margin-right: 10px;
+				padding: 5px;
+			}
+			li img{
+				border: 1px solid #ddd;
+				margin-bottom: 5px;
+				width: 160px;
+				height: 160px;
+				display: block;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<a href="购物车3-1.html" style="float: right;font: 30px/30px '';">点击查看我的购物车</a>
+		<table>
+		<!--	<tr>
+				<td><img src="images/1.jpg" alt="" /></td>
+				<td>Apple MacBook Pro 13.3英寸笔记本电脑 银色(Core i5 处理器/8GB内存/256GB SSD闪存/Retina屏 MF840CH/A)</td>
+				<td>10788.00</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td><img src="images/1.jpg" alt="" /></td>
+				<td>Apple MacBook Pro 13.3英寸笔记本电脑 银色(Core i5 处理器/8GB内存/256GB SSD闪存/Retina屏 MF840CH/A)</td>
+				<td>10788.00</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td><img src="images/1.jpg" alt="" /></td>
+				<td>Apple MacBook Pro 13.3英寸笔记本电脑 银色(Core i5 处理器/8GB内存/256GB SSD闪存/Retina屏 MF840CH/A)</td>
+				<td>10788.00</td>
+				<td>1</td>
+			</tr>-->
+		</table>
+		<ul>
+			<li>
+				<img  alt="" />
+				<button>加入购物车</button>
+			</li>
+			<li>
+				<img src="images/2.jpg" alt="" />
+				<button>加入购物车</button>
+			</li>
+			<li>
+				<img src="images/3.jpg" alt="" />
+				<button>加入购物车</button>
+			</li>
+			<li>
+				<img src="images/4.jpg" alt="" />
+				<button>加入购物车</button>
+			</li>
+		</ul>
+		<script type="text/javascript">
+			 function setcookie(key,value,day){10
+			var date=new Date();
+			date.setDate(date.getDate()+day);//设置过期时间
+			document.cookie=key+'='+encodeURI(value)+';expires='+date;
+		}
+		function getcookie(key){
+			var arr=decodeURI(document.cookie).split('; ');//编码后拆分成数组
+			for(var i=0;i<arr.length;i++){
+				var newarr=arr[i].split('=');//对数组的每一项再次拆分
+				if(newarr[0]==key){//比较key值
+					return newarr[1];//输出key对应的value
+				}
+			}
+		}
+			var arr=[{
+		        "t": "Apple MacBook Pro 13.3英寸笔记本电脑 银色(Core i5 处理器/8GB内存/256GB SSD闪存/Retina屏 MF840CH/A)",
+		        "pcp": "10788.00",
+		        "img": "images/1.jpg",
+		        "sid": "1"
+		
+		    }, {
+		
+		        "t": "Apple iPad Air 2 平板电脑 9.7英寸（64G WLAN版/A8X 芯片/Retina显示屏/Touch ID技术 MH182CH）金色",
+		        "pcp": "3299.00",
+		        "img": "images/2.jpg",
+		        "sid": "2"
+		    }, {
+		
+		        "t": "Apple iPad Air 平板电脑 9.7英寸（16G WLAN版/A7芯片/Retina显示屏 MD788CH）银色",
+		        "pcp": "2099.00",
+		        "img": "images/3.jpg",
+		        "sid": "3"
+		    }, {
+		
+		        "t": "Apple Mac mini台式电脑 (Core i5 处理器/8GB内存/1TB 存储 MGEN2CH/A)",
+		        "pcp": "4988.00",
+		        "img": "images/4.jpg",
+		        "sid": "4"
+		    }];
+
+		    
+		    var oImg=document.getElementsByTagName('img');
+		    var oBtn=document.getElementsByTagName('button');	    
+//		    var mycookie=JSON.parse(getcookie('cart'))||{goods:[]};
+	   		for(var i=0;i<oImg.length;i++){
+	   			oImg[i].src=arr[i].img;
+	   		}
+	   		var strcookie=getcookie('cart');
+	   		if(strcookie){
+	   			var ocookie=JSON.parse(strcookie);
+	   		}else{
+	   			var ocookie={sid:[],num:[]};
+	   		}
+//	   				console.log(ocookie);
+	   		
+	   		for(var i=0;i<oBtn.length;i++){
+	   			oBtn[i].sid=arr[i].sid;
+	   			oBtn[i].onclick=function(){
+	   				var index=ocookie.sid.indexOf(this.sid)
+	   				if(index>=0){
+	   					ocookie.num[index]=ocookie.num[index]+1;
+	   				}else{
+	   					ocookie.sid.push(this.sid);
+	   					ocookie.num.push(1);
+	   				}
+
+	   				setcookie('cart',JSON.stringify(ocookie),10);
+	   			};
+	   		}
+
+		</script>
+	</body>
+</html>

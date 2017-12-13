@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>五星评分</title>
+    <style type="text/css">
+    #ul1 {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        width: 300px;
+        height: 28px;
+        float: left;
+    }
+    
+    #ul1 li {
+        float: left;
+        background: url(star.gif) no-repeat 0 0;
+        width: 27px;
+        height: 28px;
+    }
+
+    #ul1 li.active{
+         background: url(star.gif) no-repeat 0 -28px;
+    }
+    </style>
+</head>
+
+<body>
+    <ul id="ul1">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <span></span>
+    <script type="text/javascript">
+        var arr=['非常不满意','不满意','满意','一般满意','非常满意'];
+        var aLi=document.getElementsByTagName('li');
+        var a=0;
+        for(var i=0;i<aLi.length;i++){
+        	aLi[i].index=i;
+        	aLi[i].onmouseover=function(){
+        		star(this.index+1)
+        	};
+        	aLi[i].onmouseout=function(){
+        		star();
+        	}
+        	aLi[i].onclick=function(){
+        		document.getElementsByTagName('span')[0].innerHTML=arr[this.index];
+        		a=this.index+1//将这个值和onmouseout配合
+        	}
+        }
+        
+        //如果点击了li，onmouseout不再是全部变灰(a=0)，而是要保留当前的值（a），如果当前（a）发生改变，代表重新提交评分，当前的a值发生变化
+        function star(num){
+        	var num=num || a;
+        	for(var i=0;i<aLi.length;i++){//i:0,1,2,3,4
+    			aLi[i].className=i<num?'active':'';
+        	}
+        }
+    </script>
+</body>
+
+</html>

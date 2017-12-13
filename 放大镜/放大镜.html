@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		*{padding:0px;margin:0px;}
+
+		.wrap{width: 1000px;height:500px; margin:0 auto;  position: relative;}
+		#spic{width: 400px;height:400px;border: 1px solid #000; float: left; position: relative;}
+		#spic img{width: 400px;height:400px;}
+		#sf{width:50px; height: 50px;background: orange;opacity: 0.3; position: absolute;left:0px;top:0px; visibility: hidden;}
+		#bf{width: 400px;height:500px; border: 1px solid #000; float: left; overflow: hidden; position: relative;left:10px; visibility: hidden;}
+		#bf img{position: absolute; left:0px;top:0px;}
+		#ulist {position: absolute;left:0px;bottom:15px; width: 402px; height:56px;overflow: hidden;}
+		#ulist a{float: left; width: 10px;height: 54px;border: 1px solid #ccc; text-decoration: none; line-height: 56px; text-align: center; background: #fff;}
+		#list{float: left;margin-left: 18px; width: 372px; position: relative; }
+		ul{ list-style: none; float: left;  position: absolute;left:0px;top:0px;}
+		ul li{float: left; width: 56px;height:56px;padding-right:6px; }
+		ul li img{width: 52px;height:52px; border: 1px solid #ccc; }
+		#right{
+			position: absolute;right:0px; top:0px;color: #333;
+		}
+		#left{
+			position: absolute;left:0px; top:0px; z-index: 2;color:#fff;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div id="spic">
+			<img src="images/1.jpg" alt="">
+			<div id="sf"></div>
+		</div>
+		<div id="bf">
+			<img src="images/1.jpg" alt="" id="bpic">
+		</div>
+		<div id="ulist">
+			<a href="javascript:;" id="left">&lt;</a>
+				<div id="list" class="ul123 ul3">
+					<ul class="ul1 ul123">
+						<li><img src="images/1.jpg" alt=""></li>
+						<li><img src="images/6.jpg" alt=""></li>
+						<li><img src="images/3.jpg" alt=""></li>
+						<li><img src="images/4.jpg" alt=""></li>
+						<li><img src="images/5.jpg" alt=""></li>
+						<li><img src="images/1.jpg" alt=""></li>
+						<li><img src="images/3.jpg" alt=""></li>
+						<li><img src="images/2.jpg" alt=""></li>
+						<li><img src="images/1.jpg" alt=""></li>
+						<li><img src="images/6.jpg" alt=""></li>
+					</ul>
+				</div>
+			<a href="javascript:;" id="right">&gt;</a>
+		</div>
+		
+	</div>
+	<script type="text/javascript">
+		function $(id){
+			return document.getElementById(id)
+		}
+		//1.适用单个类
+/*		function getclass(sclass,sparent){//sclass:类名  sparent:父框
+			sparent=sparent||document;
+			var arr=[];//存放匹配正确的元素对象
+			var eles=sparent.getElementsByTagName('*');//父框下面所有的元素
+			for(var i=0;i<eles.length;i++){
+				if(eles[i].className==sclass){
+					arr.push(eles[i]);//符合条件的元素追加数组中
+				}
+			}
+			return arr;
+		}*/
+		
+		/*function getclass(sclass,sparent){//sclass:类名  sparent:父框
+			sparent=sparent||document;
+			var arr=[];//存放匹配正确的元素对象
+			var eles=sparent.getElementsByTagName('*');//父框下面所有的元素
+			for(var i=0;i<eles.length;i++){
+				if(eles[i].className.indexOf(sclass+' ')!=-1){
+					arr.push(eles[i]);//符合条件的元素追加数组中
+				}
+			}
+			return arr;
+		}*/
+		
+		function getclass(sclass,sparent){//sclass:类名  sparent:父框
+			sparent=sparent||document;
+			var arr=[];//存放匹配正确的元素对象
+			//var reg=new RegExp('\\b'+sclass+'\\b');//单词边界
+			//var reg=new RegExp('^\\s*'+sclass+'\\s*$');//空格
+			var reg=new RegExp('(^|\\s)'+sclass+'(\\s|$)');//空格
+			//'(^|\\s)':没有空格或者有一个空格
+			
+			var eles=sparent.getElementsByTagName('*');//父框下面所有的元素
+			for(var i=0;i<eles.length;i++){
+				if(reg.test(eles[i].className)){
+					arr.push(eles[i]);//符合条件的元素追加数组中
+				}
+			}
+			return arr;
+		}
+		//alert(getclass('ul1')[0].innerHTML);//获取元素的。
+		
+		function getstyle(obj,attr){
+				if(obj.currentStyle){
+					return obj.currentStyle[attr];
+				}else{
+					return getComputedStyle(obj)[attr];
+				}
+			}
+			function move(obj,json,fn){
+				clearInterval(obj.timer);
+				obj.timer=setInterval(function(){
+					var bstop=true;//假设所有的属性都到目标点了。
+					for(var attr in json){
+						//求当前值
+						var current=null;
+						if(attr=='opacity'){
+							current=Math.round(getstyle(obj,attr)*100);
+						}else{
+							current=parseInt(getstyle(obj,attr));
+						}
+						//判断速度
+						var speed=(json[attr]-current)/7;
+						speed=speed>0?Math.ceil(speed):Math.floor(speed);
+						//判断定时器停止和输出
+						if(current!=json[attr]){//当前值不等于目标，继续运动。
+							if(attr=='opacity'){
+								obj.style[attr]=(current+speed)/100;
+								obj.style.filter='alpha(opacity='+(current+speed)+')';
+							}else{
+								obj.style[attr]=current+speed+'px';
+							}
+							bstop=false;
+						}
+					}
+					if(bstop){
+						clearInterval(obj.timer);
+						fn&&fn();	
+					}
+						
+				},20)
+			}
+	</script>
+	<script type="text/javascript">
+		//获取元素
+		var spic=$('spic');
+		var spicimg=spic.getElementsByTagName('img')[0];
+		var bf=$('bf');
+		var sf=$('sf');
+		var bpic=$('bpic');
+		var wrap=getclass('wrap')[0];
+		var list=$('list');
+		var aLi=list.getElementsByTagName('li');
+		var oUl=list.getElementsByTagName('ul')[0];
+		var left=$('left');
+		var right=$('right');
+		oUl.style.width=aLi[0].offsetWidth*aLi.length+'px';//动态获取ul的宽度
+		/*var spic=$('spic');*/
+		spic.onmouseover=function(){
+			sf.style.visibility='visible';
+			bf.style.visibility='visible';
+			//设置小放大镜的宽高
+			sf.style.width=spic.offsetWidth*bf.offsetWidth/bpic.offsetWidth+'px';
+			sf.style.height=spic.offsetHeight*bf.offsetHeight/bpic.offsetHeight+'px';
+
+			var scale=bf.offsetWidth/sf.offsetWidth;//求放大比例
+
+
+			this.onmousemove=function(ev){
+				var ev=ev||window.event;
+				var l=ev.clientX-wrap.offsetLeft-sf.offsetWidth/2;
+				var t=ev.clientY-wrap.offsetTop-sf.offsetHeight/2;
+				if(l<0){//限制盒子在小图中可见
+					l=0;
+				}else if(l>=spic.offsetWidth-sf.offsetWidth){
+					l=spic.offsetWidth-sf.offsetWidth;
+				}
+				if(t<0){
+					t=0;
+				}else if(t>=spic.offsetHeight-sf.offsetHeight){
+					t=spic.offsetHeight-sf.offsetHeight;
+				}
+
+
+				sf.style.left=l+'px';
+				sf.style.top=t+'px';
+
+				bpic.style.left=-scale*l+'px';//大图显示范围
+				bpic.style.top=-scale*t+'px';
+			}
+
+		}
+		spic.onmouseout=function(){
+			sf.style.visibility='hidden';
+			bf.style.visibility='hidden';
+		}
+		//点击小图出现大图
+		for(var i=0;i<aLi.length;i++){
+			aLi[i].index=i;
+			aLi[i].onclick=function(){
+				spicimg.src=this.getElementsByTagName('img')[0].src;
+				bpic.src=this.getElementsByTagName('img')[0].src;
+			}
+		}
+		
+		
+		var num=6;//小图标显示的个数
+		var aliwidth=aLi[0].offsetWidth;//单张图片的尺寸
+		if(num>aLi.length){//如果aLi的长度小于6，隐藏右边箭头
+			right.style.color='#fff';
+		}
+		
+		right.onclick=function(){
+			if(num<aLi.length){//num的值如果小于aLi的length，就可以点击按钮移动。
+				num++;
+				if(num==aLi.length){//如果num的值和aLi的length一致就让右侧按钮消失，
+					right.style.color='#fff';
+				}
+				left.style.color='#333';
+			}
+			move(oUl,{left:-aliwidth*(num-6)});
+		}
+		
+		
+		
+		left.onclick=function(){
+			if(num>6){//num--是否有效
+				num--;
+				if(num==6){
+					left.style.color='#fff';
+				}
+				right.style.color='#333';
+			}
+			move(oUl,{left:-aliwidth*(num-6)});
+		}
+
+	</script>
+</body>
+</html>

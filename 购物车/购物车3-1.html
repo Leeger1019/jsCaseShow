@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+		<style type="text/css">
+			table,td{
+				border: 1px solid red;
+				border-collapse: collapse;
+			}
+			td{
+				padding: 0 20px;
+			}
+		</style>
+	<body>
+		<table border="" cellspacing="" cellpadding="">
+			
+		</table>
+		<script type="text/javascript">
+			function setcookie(key,value,day){10
+				var date=new Date();
+				date.setDate(date.getDate()+day);//设置过期时间
+				document.cookie=key+'='+encodeURI(value)+';expires='+date;
+			}
+			function getcookie(key){
+				var arr=decodeURI(document.cookie).split('; ');//编码后拆分成数组
+				for(var i=0;i<arr.length;i++){
+					var newarr=arr[i].split('=');//对数组的每一项再次拆分
+					if(newarr[0]==key){//比较key值
+						return newarr[1];//输出key对应的value
+					}
+				}
+			}
+			var arr=[{
+		        "t": "Apple MacBook Pro 13.3英寸笔记本电脑 银色(Core i5 处理器/8GB内存/256GB SSD闪存/Retina屏 MF840CH/A)",
+		        "pcp": "10788.00",
+		        "img": "images/1.jpg",
+		        "sid": "1"
+		
+		    }, {
+		
+		        "t": "Apple iPad Air 2 平板电脑 9.7英寸（64G WLAN版/A8X 芯片/Retina显示屏/Touch ID技术 MH182CH）金色",
+		        "pcp": "3299.00",
+		        "img": "images/2.jpg",
+		        "sid": "2"
+		    }, {
+		
+		        "t": "Apple iPad Air 平板电脑 9.7英寸（16G WLAN版/A7芯片/Retina显示屏 MD788CH）银色",
+		        "pcp": "2099.00",
+		        "img": "images/3.jpg",
+		        "sid": "3"
+		    }, {
+		
+		        "t": "Apple Mac mini台式电脑 (Core i5 处理器/8GB内存/1TB 存储 MGEN2CH/A)",
+		        "pcp": "4988.00",
+		        "img": "images/4.jpg",
+		        "sid": "4"
+		    }];
+		var oTable=document.getElementsByTagName('table')[0];
+		var strcookie=getcookie('cart');
+	   		if(strcookie){
+	   			var ocookie=JSON.parse(strcookie);
+	   			var str='';
+	   			for(var i=0;i<ocookie.sid.length;i++){
+	   					var index=ocookie.sid[i]-1;
+			    		str+='<tr xxx='+index+'>'+
+			    			'<td><img src="'+arr[index].img+'" alt="" /></td>'+
+							'<td>'+arr[index].t+'</td>'+
+							'<td>'+arr[index].pcp+'</td>'+
+							'<td>'+ocookie.num[i]+'</td>'+
+							'</tr>';
+			    }
+			    oTable.innerHTML=str;		
+	   		}	   			
+			else{
+	   			var oC=document.createElement('div');
+	   			oC.innerHTML="你的购物车比屁股还干净！"; 
+	   			document.body.appendChild(oC);
+	   		}
+	   		
+	   		
+		
+		</script>
+	</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css" media="screen">
+    #div1 {
+        width: 50px;
+        height: 50px;
+        background: red;
+        position: absolute;
+        left: 200px;
+        top: 600px;
+    }
+    
+    #div2 {
+        width: 20px;
+        height: 60px;
+        background: blue;
+        position: absolute;
+        right:0px;
+        top: 200px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="div1"><img src="2.jpg" alt="白马汽车" width="200"></div>
+    <div id="div2">购物车</div>
+    <script type="text/javascript">
+    var oDiv1 = document.getElementById('div1');
+    var oDiv2 = document.getElementById('div2');
+    var num=0;
+    oDiv1.onclick = function() {
+            var clonediv = oDiv1.cloneNode(true);//对div包括图片进行克隆
+            clonediv.style.width = '50px';//设置尺寸
+            clonediv.style.height = '50px';
+            clonediv.style.overflow="hidden";//溢出隐藏
+            clonediv.style.opacity=0.3;//设置透明度
+            document.body.appendChild(clonediv);//追加
+
+            var current = { //克隆div的位置
+                x: clonediv.offsetLeft,
+                y: clonediv.offsetTop
+            }
+
+
+            var target = { //盒子之间的距离，求x，y
+                x: oDiv2.offsetLeft - current.x,
+                y: oDiv2.offsetTop - current.y
+            }
+
+            var a = 0.001; //自己约定。y=a*x*x+b*x==>b=(y-a*x*x)/x;  数据越小，抛物线越平
+            var b = (target.y - a * target.x * target.x) / target.x; //目标,求得b
+
+            var timer = null;
+            var x=0;
+            timer=setInterval(function(){
+            	x+=25;
+            	clonediv.style.left=current.x+x+'px';//移动到目标点
+            	clonediv.style.top=current.y+(a*x*x+b*x)+'px';
+            	if(x>=target.x){
+            		clearInterval(timer);
+            		document.title=clonediv.getElementsByTagName('img')[0].alt+':'+ ++num;//让数量累加
+            		document.body.removeChild(clonediv);//将克隆的div删除
+            	}
+            },100)
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				padding:0px;
+				margin:0px;
+			}
+			html{
+				height: 100%;
+			}
+			body{
+				height: 100%;
+				background: #000;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function ranNum(min,max){
+				return parseInt(Math.random()*(max-min+1)+min);
+			}
+			
+			document.onclick=function(){
+				console.log(ranNum(3,6));
+			}
+			function getstyle(obj,attr){
+				if(obj.currentStyle){
+					return obj.currentStyle[attr];
+				}else{
+					return getComputedStyle(obj)[attr];
+				}
+			}
+			function move(obj,json,fn){
+				clearInterval(obj.timer);
+				obj.timer=setInterval(function(){
+					var bstop=true;//假设所有的属性都到目标点了。
+					for(var attr in json){
+						//求当前值
+						var current=null;
+						if(attr=='opacity'){
+							current=Math.round(getstyle(obj,attr)*100);
+						}else{
+							current=parseInt(getstyle(obj,attr));
+						}
+						//判断速度
+						var speed=(json[attr]-current)/7;
+						speed=speed>0?Math.ceil(speed):Math.floor(speed);
+						//判断定时器停止和输出
+						if(current!=json[attr]){//当前值不等于目标，继续运动。
+							if(attr=='opacity'){
+								obj.style[attr]=(current+speed)/100;
+								obj.style.filter='alpha(opacity='+(current+speed)+')';
+							}else{
+								obj.style[attr]=current+speed+'px';
+							}
+							bstop=false;
+						}
+					}
+					if(bstop){
+						clearInterval(obj.timer);
+						fn&&fn();	
+					}
+						
+				},30)
+			}
+			function Fireworks(x,y){//创建烟花的构造函数
+				this.x=x;
+				this.y=y;
+				this.cheight=document.documentElement.clientHeight;
+				var that=this;
+				this.createBox=function(){
+					this.box=document.createElement('div');
+					this.box.style.cssText='width:5px;height:5px;background:#fff;position:absolute;left:'+this.x+'px;top:'+this.cheight+'px;';
+					document.body.appendChild(this.box);
+					this.move();
+				}
+				this.move=function(){
+					move(this.box,{top:this.y},function(){
+						//alert(this);window
+						document.body.removeChild(that.box);
+						that.fragment();
+					});
+				}
+				this.fragment=function(){
+					for(var i=0;i<ranNum(30,60);i++){
+						this.frag=document.createElement('div');
+						this.frag.style.cssText='width:5px;height:5px;background:rgb('+ranNum(0,255)+','+ranNum(0,255)+','+ranNum(0,255)+');position:absolute;left:'+this.x+'px;top:'+this.y+'px;';
+					document.body.appendChild(this.frag);
+					this.boom(this.frag);
+					}
+				}
+				
+				this.boom=function(obj){
+					var speedx=parseInt((Math.random()>0.5?'':'-')+ranNum(1,15));
+					var speedy=parseInt((Math.random()>0.5?'':'-')+ranNum(1,15));
+					var initx=this.x//初始速度
+					var inity=this.y;
+					obj.timer=setInterval(function(){
+						initx+=speedx;//叠加
+						inity+=speedy++;
+						obj.style.left=initx+'px';
+						obj.style.top=inity+'px';
+						if(inity>=that.cheight){
+							clearInterval(obj.timer);
+							document.body.removeChild(obj);
+						}
+					},20);
+				}
+			}
+			
+			document.onclick=function(ev){
+				var ev=ev||window.event;
+				new Fireworks(ev.clientX,ev.clientY).createBox();
+			}
+			
+		</script>
+	</body>
+</html>
